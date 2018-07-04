@@ -1,0 +1,42 @@
+.router-demo{
+    /* padding: 20px;
+    margin-bottom: 20px; */
+    background-color: #ffffff;
+}
+
+.router-box{
+    overflow: hidden;
+    position: relative;
+}
+
+.menu-box{
+    width: 200px;
+    background-color: cadetblue;
+    float: left;
+}
+
+.menu-ul li {
+    min-height:40px;
+    line-height: 40px;
+}
+
+.menu-link{
+    width: 100%;
+    display: inline-block;
+    color: #ffffff;
+    padding: 0 20px;
+    cursor: pointer;
+}
+.menu-link.sub{
+    background-color: rgb(72, 121, 120);
+}
+
+.menu-link:hover{
+    background-color: rgb(42, 80, 80);
+}
+
+.view-box{
+    overflow: hidden;
+    background-color: bisque;
+    padding-left: 20px;
+}
