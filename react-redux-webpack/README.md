@@ -16,26 +16,26 @@ npm run prd<br/>
 ├── devServer.js                // webpack配置，webpack-dev-server基于node api的配置方式<br/>
 ├── expServer.js                // webpack配置，webpack-dev-middleware基于node api的配置<br/>
 ├── webpack                     // webpack配置<br/>
-│   ├── webpack.helper.js       // webpack配置，打包入口等<br/>
-│   ├── webpack.ouput.js        // webpack配置，打包输出目录，包括虚拟目录<br/>
-│   ├── webpack.rules.js        // webpack配置，js/css文件处理器等<br/>
-│   ├── webpack.plugins.js      // webpack配置，插件配置，html生成/提取公共代码等<br/>
-│   └── webpack.server.js       // webpack配置，webpack-dev-server基于devServer的配置<br/>
+├── ├── webpack.helper.js       // webpack配置，打包入口等<br/>
+├── ├── webpack.ouput.js        // webpack配置，打包输出目录，包括虚拟目录<br/>
+├── ├── webpack.rules.js        // webpack配置，js/css文件处理器等<br/>
+├── ├── webpack.plugins.js      // webpack配置，插件配置，html生成/提取公共代码等<br/>
+├── ├── webpack.server.js       // webpack配置，webpack-dev-server基于devServer的配置<br/>
 ├── src                         // 网站源码<br/>
-│   ├── index.html              // 首页html文件模版，webpack会根据此文件打包，添加引入<br/>
-│   ├── entry.js                // 网站全局入口，引入react/redux等依赖<br/>
-│   ├── style                   // css样式文件<br/>
-│   ├── router                  // 路由配置<br/>
-│   │   └── routers.js          // 路由配置详细对应关系<br/>
-│   ├── pages                   // 路由对应的页面<br/>
-│   ├── components              // 公用组件<br/>
-│   ├── util                    // 公用库或者插件<br/>
-│   ├── redux                   // redux：全局状态管理<br/>
-│   │   ├── actions             // redux：执行动作<br/>
-│   │   ├── reducers            // redux：获取新state<br/>
-│   │   └── containers          // redux：绑定container组件和view组件<br/>
-│   └── data                    // 本地数据文件存储目录<br/>
-└── .babelrc                    // ES6编译配置，也可以写到webpack.config.js中<br/>
+├── ├── index.html              // 首页html文件模版，webpack会根据此文件打包，添加引入<br/>
+├── ├── entry.js                // 网站全局入口，引入react/redux等依赖<br/>
+├── ├── style                   // css样式文件<br/>
+├── ├── router                  // 路由配置<br/>
+├── ├── ├── routers.js          // 路由配置详细对应关系<br/>
+├── ├── pages                   // 路由对应的页面<br/>
+├── ├── components              // 公用组件<br/>
+├── ├── util                    // 公用库或者插件<br/>
+├── ├── redux                   // redux：全局状态管理<br/>
+├── ├── ├── actions             // redux：执行动作<br/>
+├── ├── ├── reducers            // redux：获取新state<br/>
+├── ├── ├── containers          // redux：绑定container组件和view组件<br/>
+├── ├── data                    // 本地数据文件存储目录<br/>
+├── .babelrc                    // ES6编译配置，也可以写到webpack.config.js中<br/>
 
 # react开发说明
 * 入口
