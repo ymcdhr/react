@@ -72,5 +72,5 @@ npm run prd<br/>
 * container 将容器组件和视图组件绑定，其中容器组件中处理action和reducer的数据，视图组件定义模版。
 
 # Webpack 打包配置
-参考：
+参考：https://github.com/ymcdhr/webpack
 
