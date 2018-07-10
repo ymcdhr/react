@@ -524,7 +524,7 @@ this.setState((prevState, props) => ({
  
 
 
-5、react-redux的结构
+## 5、react-redux的结构
 
 （1）定义ui组件，写好模版        =>        1个模版为1个js文件<br/>
 （2）定义action：描述“发生了什么”        =>         写入action.js<br/>
