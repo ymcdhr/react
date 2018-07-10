@@ -243,11 +243,11 @@ class DemoChild extends Component {
 ```
 
 ### 6、数据的状态提升
-（1）如果多个子组件公用一个数据，建议使用状态提升将数据存储到父组件中
-（2）参考：http://www.css88.com/react/docs/lifting-state-up.html
+（1）如果多个子组件公用一个数据，建议使用状态提升将数据存储到父组件中 <br/>
+（2）参考：http://www.css88.com/react/docs/lifting-state-up.html<br/>
 
-### 7、获取组件的子元素（组件标签中包含的内容），例如xxxx：<Component> xxxx </Component>
-（1）通过this.props.children获取组件的内容，例如xxxx。
+### 7、获取组件的子元素（组件标签中包含的内容），例如xxxx：<Component> xxxx </Component><br/>
+（1）通过this.props.children获取组件的内容，例如xxxx。<br/>
 （2）可以自定义组件内容：
 ```js
 function SplitPane(props) {
@@ -275,3 +275,274 @@ function App() {
   );
 }
 ```
+
+
+## react绑定样式方法
+
+### 1、组件添加样式
+（1）dom元素中添加className
+```css
+//在css文件中定义样式
+.lala{
+        color:red;
+        font-size: 40px;
+}
+```
+```js
+//在jsx中 import css文件，然后dom元素上指定className
+<div className="lala"> 我出来了!</div>
+```
+（2）dom元素中添加style
+```js
+let style={color:"red","font-size":"40px"}
+<div style={style}> 我出来了! </div>
+```
+### 2、组件动态绑定样式
+（1）动态绑定className
+```js
+class DemoStyle extends Component {
+    constructor (){
+        super();
+        this.state = {
+            dyStyle: "class-red"
+        }
+
+        setTimeout(()=>{
+            this.setState({
+                dyStyle: "class-blue"
+            })
+        },5000);
+    }
+    render() {
+        return (
+            <div className={this.state.dyStyle}>
+                <p>5s后改变颜色</p>
+            </div>
+        );
+    }
+}
+```
+（2）动态绑定style
+```js
+class DemoStyle extends Component {
+    constructor (){
+        super();
+        this.state = {
+            dyStyle: {
+                color: 'red',
+                fontSize: '14px'
+            }
+        }
+
+        setTimeout(()=>{
+            this.setState({
+                dyStyle: {
+                    color: 'blue',
+                    fontSize: '18px'
+                }
+            })
+        },5000);
+    }
+    render() {
+        return (
+            <div style={this.state.dyStyle}>
+                <p>5s后改变颜色</p>
+            </div>
+        );
+    }
+}
+```
+
+## react事件绑定
+### 1、组件中事件定义的几种方法：
+（1）在函数function组件中定义事件
+```js
+function ActionLink() {
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+  }
+
+  return (
+    <a href="#" onClick={handleClick}>
+      Click me
+    </a>
+  );
+}
+```
+（2）在类组件中定义事件，方式一：
+（2.1）必须在constructor中bind this
+```js
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // 这个绑定是必要的，使`this`在回调中起作用
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+```
+（3）在类组件中定义事件，方式二：可以在回调中使用一个 箭头函数
+```js
+class LoggingButton extends React.Component {
+  handleClick() {
+    console.log('this is:', this);
+  }
+
+  render() {
+    // 这个语法确保 `this` 被绑定在 handleClick 中
+    return (
+      <button onClick={(e) => this.handleClick(e)}>
+        Click me
+      </button>
+    );
+  }
+}
+```
+（4）事件传参：
+```bash
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+```
+（5）不能使用return false
+
+## react中state&setState
+### 1、组件的数据绑定，state使用：
+（1）state定义与数据的绑定（参考示例）
+```js
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
+（2）不能直接修改state，需要使用setState方法
+```js
+tick() {
+    this.setState({
+      date: new Date()
+    });
+}
+```
+（3）setState的使用以及两种传参方式：<br/>
+（3.1）方式一，通过定义新对象（可以局部更新，setState会合并state），例如：<br/>
+```js
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: [],
+      comments: []
+    };
+  }
+
+componentDidMount() {
+    fetchPosts().then(response => {
+      this.setState({
+        posts: response.posts
+      });
+    });
+
+    fetchComments().then(response => {
+      this.setState({
+        comments: response.comments
+      });
+    });
+  }
+```
+（3.2）方式二，通过函数返回值（其中第一个参数为之前状态对象prevState），例如：
+```js
+// 正确
+this.setState((prevState, props) => ({
+  counter: prevState.counter + props.increment
+}));
+```
+（4）state值是局部的，只能在当前组件使用。如果子组件需要使用，需要通过子组件的属性传值。<br/>
+<br/>
+（5）在绑定数据的时候，不要直接绑定一个对象；否则会报错～<br/>
+
+# Redux
+## 1、redux的应用场景
+#### （1）基本应用场景：全局状态管理器，或者全局数据，全局变量的存储器！
+
+#### （2）常见的应用场景：
+#### （2.1）多个页面都要用的公共信息 ；如果存进store就不用每个页面都像服务器请求数据；
+例如：购物网站，已经添加到购物车中的商品；在购买页面/购物车页面/确认订单等页面都可能用到商品数据。
+
+#### （2.2）一个页面有多个http请求获取数据 ；？
+例如：Dashboard上有多个模块，每个模块的数据都是一个请求；且每个模块都有一些操作会对数据进行改变。
+
+#### （2.3）不同组件之间期望不用通过组件代码通信；
+例如：父子组件嵌套较深，且有较频繁的数据通信。
+
+#### （3）为什么应用redux：
+随着 JavaScript 单页应用开发日趋复杂，JavaScript 需要管理比任何时候都要多的 state （状态）。 这些 state 可能包括服务器响应、缓存数据、本地生成尚未持久化到服务器的数据，也包括 UI 状态，如激活的路由，被选中的标签，是否显示加载动效或者分页器等等。<br/><br/>
+
+管理不断变化的 state 非常困难。如果一个 model 的变化会引起另一个 model 变化，那么当 view 变化时，就可能引起对应 model 以及另一个 model 的变化，依次地，可能会引起另一个 view 的变化。直至你搞不清楚到底发生了什么。state 在什么时候，由于什么原因，如何变化已然不受控制。 当系统变得错综复杂的时候，想重现问题或者添加新功能就会变得举步维艰。<br/>
+
+ 
+
+
+## 2、redux的原始组成部分
+（1）action，描述“发生了什么”<br/>
+（2）reducer，根据 action 更新 state <br/>
+（3）store，关联action和reducer<br/>
+
+## 3、redux的特点：严格的单向数据流
+
+## 4、redux的原始流程：
+
+（1）定义action => dispatch(action) 将action传入store<br/>
+
+（2）Redux store 调用 reducer 函数，并将state树和action作为参数<br/>
+
+（3）combineReducers函数将多个reducer合并为一个<br/>
+
+（4）Redux store 保存了根 reducer 返回的完整 state 树。所有订阅  store.subscribe(listener) 的监听器都将被调用；监听器里可以调用  store.getState() 获得当前 state。<br/>
+
+ 
+
+
+5、react-redux的结构
+
+（1）定义ui组件，写好模版        =>        1个模版为1个js文件<br/><br/>
+
+（2）定义action：描述“发生了什么”        =>         写入action.js<br/><br/>
+
+（3）定义reducer：在触发action时（即触发ui组件上的事件），store会触发对应的reducer 返回新的store       =>        每个reducer为1个js文件，最后使用combineReducers合并所有reducer<br/><br/>
+
+（4）定义容器组件        =>        将容器组件connect绑定到ui组件，写在1个js文件中<br/><br/>
+
+mapStateToProps：给reducer里面返回的新state做处理，例如过滤/取别名等<br/><br/>
+
+mapDispatchToProps：根据action使用dispatch来定义事件，将action和事件关联到ui组件里面，在ui组件触发<br/><br/>
+
+connect：将mapStateToProps、mapDispatchToProps和ui组件进行绑定<br/><br/>
+
+（4）入口，使用：let store = createStore(reducers) 将容器组件和reducer进行绑定。<br/><br/>
+
+（6）调用，在页面中调用容器组件<br/>
