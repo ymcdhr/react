@@ -527,13 +527,18 @@ this.setState((prevState, props) => ({
 ## 5、react-redux的结构
 
 （1）定义ui组件，写好模版        ==>        1个模版为1个js文件<br/>
+
 （2）定义action：描述“发生了什么”        ==>         写入action.js<br/>
+
 （3）定义reducer：在触发action时（即触发ui组件上的事件），store会触发对应的reducer 返回新的store       ==>        每个reducer为1个js文件，最后使用combineReducers合并所有reducer<br/>
+
 （4）定义容器组件        ==>        将容器组件connect绑定到ui组件，写在1个js文件中<br/>
 * mapStateToProps：给reducer里面返回的新state做处理，例如过滤/取别名等<br/>
 * mapDispatchToProps：根据action使用dispatch来定义事件，将action和事件关联到ui组件里面，在ui组件触发<br/>
 * connect：将mapStateToProps、mapDispatchToProps和ui组件进行绑定<br/>
+
 （5）入口，使用：let store = createStore(reducers) 将容器组件和reducer进行绑定。<br/>
+
 （6）调用，在页面中调用容器组件<br/>
 
 
