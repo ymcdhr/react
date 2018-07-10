@@ -535,3 +535,205 @@ mapDispatchToProps：根据action使用dispatch来定义事件，将action和事
 connect：将mapStateToProps、mapDispatchToProps和ui组件进行绑定<br/>
 （5）入口，使用：let store = createStore(reducers) 将容器组件和reducer进行绑定。<br/>
 （6）调用，在页面中调用容器组件<br/>
+
+
+# dva知识点
+
+## dva的安装
+npm install dva --save-dev
+
+## dva常见的坑
+https://github.com/dvajs/dva/issues
+
+## 1、dva是什么
+dva = React-Router + Redux + Redux-saga<br/>
+dva 是阿里体验技术部开发的 React 应用框架，将上面三个 React 工具库包装在一起，简化了 API，让开发 React 应用更加方便和快捷。<br/>
+
+## 2、dva的数据流程图
+数据的改变发生通常是通过用户交互行为或者浏览器行为（如路由跳转等）触发的，当此类行为会改变数据的时候可以通过  dispatch 发起一个 action；<br/>
+#### 1、如果是同步行为会直接通过  Reducers 改变  State；<br/>
+#### 2、如果是异步行为（副作用）会先触发  Effects 然后流向  Reducers 最终改变  State，所以在 dva 中，数据流向非常清晰简明，并且思路基本跟开源社区保持一致（也是来自于开源社区）。<br/>
+如图示：
+（1）普通数据流<br/>
+（2）异步数据流/effect<br/>
+
+
+#### 3、dva的结构定义：
+（1）初始化入口：<br/>
+const app = dva();<br/>
+<br/>
+（2）plugins插件<br/>
+app.use({})<br/>
+<br/>
+（3）model<br/>
+定义数据模型<br/>
+<br/>
+（4）router路由，可以作为网站入口<br/>
+<br/>
+（5）dva启动<br/>
+app.start('#app')<br/>
+<br/>
+（6）通常是结合router+ui组件+model来定义<br/>
+<br/>
+#### 4、models定义数据模型注意事项：
+（1）state 定义状态数据<br/>
+（2）reducer 处理旧state，返回新state，可以理解为执行action动作<br/>
+（3）effects 处理异步数据，执行异步请求后再执行action动作<br/>
+（4）subscription，监听某些动作<br/>
+
+#### 5、effects处理异步数据：
+（1）定义一个generator函数，为什么要用generator函数？
+```js
+import Request from "../../XXX"
+
+effects:{
+        *fetch({payload: payload}, {call, put}){
+                let url = "http://xxx";
+                const { data, headers } =  yield call(Request,url);
+                yield put({
+                        type: 'async',
+                        payload: data
+                })
+        }
+}
+```
+（2）effects函数的结构，dva 提供多个 effect 函数内部的处理函数，比较常用的是 call 和 put。<br/>
+call：执行异步函数；<br/>
+put：发出一个 Action，类似于 dispatch；<br/>
+
+#### 6、调用reducer 和 effects里函数
+（1）reducer里面，<br/>
+（2）effects里面，通过put(action)调用reducer和effects的函数<br/>
+（3）ui组件里面，通过dispatch(action)调用reducer和effects的函数<br/>
+
+#### 7、将model和ui组件connect起来
+
+#### 8、数据的持久化/数据缓存
+
+#### 9、如何处理初始数据
+
+#### 10、如何统一处理错误
+
+#### 11、动态加载路由和model
+
+## 附录：
+#### 1、纯函数，详细参考：https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch3.html
+（1）什么是纯函数：纯函数是这样一种函数，即相同的输入，永远会得到相同的输出，而且没有任何可观察的副作用。<br/>
+（2）纯函数的好处<br/>
+（2.1）纯函数总能够根据输入来做缓存<br/>
+（2.2）可移植性／自文档化<br/>
+（2.3）可测试性<br/>
+（2.4）合理性<br/>
+（2.5）并行代码：因为纯函数之间不会访问共享内存<br/>
+
+#### 2、函数式编程，详细参考：https://legacy.gitbook.com/book/llh911001/mostly-adequate-guide-chinese/details
+
+#### 3、generator函数
+（1）概念
+```js
+function* helloWorldGenerator() {
+  yield 'hello';
+  yield 'world';
+  return 'ending';
+}
+
+var hw = helloWorldGenerator();
+
+hw.next()
+// { value: 'hello', done: false }
+
+hw.next()
+// { value: 'world', done: false }
+
+hw.next()
+// { value: 'ending', done: true }
+
+hw.next()
+// { value: undefined, done: true }
+ ```
+（2）yield作用<br/>
+表示暂停执行表达式<br/>
+<br/>
+（3）next作用<br/>
+继续执行下一条表达式，返回一个有着 value和 done两个属性的对象<br/>
+<br/>
+（4）yield和return的区别<br/>
+yield是暂停执行，return是结束执行<br/>
+
+# React-router的用法
+## 1、react-router4安装：
+npm install --save-dev react-router-dom
+
+## 2、路由包的引入：
+```js
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+```
+## 3、路由定义
+（1）路由容器：BrowserRouter、HashRouter的区别？<br/>
+（2）定义ui导航，指定路由路径和链接的按钮；<br/>
+（3）定义view视图，指定路由到那个具体的组件。<br/>
+```js
+const BasicExample = () => (
+  <Router>
+    <div>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/topics">Topics</Link></li>
+      </ul>
+
+      <hr/>
+
+      <Route exact path="/" component={Home}/>
+      <Route path="/about" component={About}/>
+      <Route path="/topics" component={Topics}/>
+    </div>
+  </Router>
+)
+```
+## 2、嵌套路由：在子组件中定义
+
+## 3、动态路由：
+```js
+const Topics = ({ match }) => (
+  <div>
+    <h2>Topics</h2>
+    <ul>
+      <li>
+        <Link to={`${match.url}/rendering`}>
+          Rendering with React
+        </Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/components`}>
+          Components
+        </Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/props-v-state`}>
+          Props v. State
+        </Link>
+      </li>
+    </ul>
+
+    <Route path={`${match.url}/:topicId`} component={Topic}/>
+    <Route exact path={match.url} render={() => (
+      <h3>Please select a topic.</h3>
+    )}/>
+  </div>
+)
+
+const Topic = ({ match }) => (
+  <div>
+    <h3>{match.params.topicId}</h3>
+  </div>
+)
+```
+## 4、严格匹配：exact
+
+
