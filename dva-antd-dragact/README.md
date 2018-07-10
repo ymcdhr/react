@@ -192,11 +192,11 @@ class Welcome extends React.Component {
 ```
 （3）子组件为类class定义时，constructor必须指定super(props)，参考：https://segmentfault.com/q/1010000008340434 <br/>
 
-（3.1）super()的目的：在ES6中，在子类的 constructor中必须先调用 super才能引用 this。因为super相当于在子类中继承父类的constructor。<br/>
+* super()的目的：在ES6中，在子类的 constructor中必须先调用 super才能引用 this。因为super相当于在子类中继承父类的constructor。<br/>
 
-（3.2）super(props)的目的：在 constructor中可以使用 this.props，继承祖先的props属性。<br/>
+* super(props)的目的：在 constructor中可以使用 this.props，继承祖先的props属性。<br/>
 
-（3.3）无论有没有constructor，在render中this.props都是可以使用的，这是React自动附带的；如果没用到constructor,是可以不写的,直接使用变量：{this.props.handleEmail}<br/>
+* 无论有没有constructor，在render中this.props都是可以使用的，这是React自动附带的；如果没用到constructor,是可以不写的,直接使用变量：{this.props.handleEmail}<br/>
 
 ### 5、子组件传递数据到父组件
 ```js
@@ -526,13 +526,13 @@ this.setState((prevState, props) => ({
 
 ## 5、react-redux的结构
 
-（1）定义ui组件，写好模版        =>        1个模版为1个js文件<br/>
-（2）定义action：描述“发生了什么”        =>         写入action.js<br/>
-（3）定义reducer：在触发action时（即触发ui组件上的事件），store会触发对应的reducer 返回新的store       =>        每个reducer为1个js文件，最后使用combineReducers合并所有reducer<br/>
-（4）定义容器组件        =>        将容器组件connect绑定到ui组件，写在1个js文件中<br/>
-mapStateToProps：给reducer里面返回的新state做处理，例如过滤/取别名等<br/>
-mapDispatchToProps：根据action使用dispatch来定义事件，将action和事件关联到ui组件里面，在ui组件触发<br/>
-connect：将mapStateToProps、mapDispatchToProps和ui组件进行绑定<br/>
+（1）定义ui组件，写好模版        ==>        1个模版为1个js文件<br/>
+（2）定义action：描述“发生了什么”        ==>         写入action.js<br/>
+（3）定义reducer：在触发action时（即触发ui组件上的事件），store会触发对应的reducer 返回新的store       ==>        每个reducer为1个js文件，最后使用combineReducers合并所有reducer<br/>
+（4）定义容器组件        ==>        将容器组件connect绑定到ui组件，写在1个js文件中<br/>
+* mapStateToProps：给reducer里面返回的新state做处理，例如过滤/取别名等<br/>
+* mapDispatchToProps：根据action使用dispatch来定义事件，将action和事件关联到ui组件里面，在ui组件触发<br/>
+* connect：将mapStateToProps、mapDispatchToProps和ui组件进行绑定<br/>
 （5）入口，使用：let store = createStore(reducers) 将容器组件和reducer进行绑定。<br/>
 （6）调用，在页面中调用容器组件<br/>
 
@@ -553,28 +553,31 @@ dva 是阿里体验技术部开发的 React 应用框架，将上面三个 React
 数据的改变发生通常是通过用户交互行为或者浏览器行为（如路由跳转等）触发的，当此类行为会改变数据的时候可以通过  dispatch 发起一个 action；<br/>
 #### 1、如果是同步行为会直接通过  Reducers 改变  State；<br/>
 #### 2、如果是异步行为（副作用）会先触发  Effects 然后流向  Reducers 最终改变  State，所以在 dva 中，数据流向非常清晰简明，并且思路基本跟开源社区保持一致（也是来自于开源社区）。<br/>
-如图示：
+如图示：<br/>
 （1）普通数据流<br/>
 （2）异步数据流/effect<br/>
 
 
 #### 3、dva的结构定义：
 （1）初始化入口：<br/>
-const app = dva();<br/>
-<br/>
+```js
+const app = dva();
+```
 （2）plugins插件<br/>
-app.use({})<br/>
-<br/>
+```js
+app.use({})
+```
 （3）model<br/>
-定义数据模型<br/>
-<br/>
+```js
+//定义数据模型
+```
 （4）router路由，可以作为网站入口<br/>
-<br/>
 （5）dva启动<br/>
-app.start('#app')<br/>
-<br/>
+```js
+app.start('#app')
+```
 （6）通常是结合router+ui组件+model来定义<br/>
-<br/>
+
 #### 4、models定义数据模型注意事项：
 （1）state 定义状态数据<br/>
 （2）reducer 处理旧state，返回新state，可以理解为执行action动作<br/>
@@ -620,11 +623,11 @@ put：发出一个 Action，类似于 dispatch；<br/>
 #### 1、纯函数，详细参考：https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch3.html
 （1）什么是纯函数：纯函数是这样一种函数，即相同的输入，永远会得到相同的输出，而且没有任何可观察的副作用。<br/>
 （2）纯函数的好处<br/>
-（2.1）纯函数总能够根据输入来做缓存<br/>
-（2.2）可移植性／自文档化<br/>
-（2.3）可测试性<br/>
-（2.4）合理性<br/>
-（2.5）并行代码：因为纯函数之间不会访问共享内存<br/>
+* 纯函数总能够根据输入来做缓存<br/>
+* 可移植性／自文档化<br/>
+* 可测试性<br/>
+* 合理性<br/>
+* 并行代码：因为纯函数之间不会访问共享内存<br/>
 
 #### 2、函数式编程，详细参考：https://legacy.gitbook.com/book/llh911001/mostly-adequate-guide-chinese/details
 
